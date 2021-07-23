@@ -5,6 +5,7 @@ import com.example.Test.Service.UserService;
 import com.example.Test.model.Results;
 import com.example.Test.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,23 @@ public class UserController {
         this.resultService = resultService;
     }
 
-    @PostMapping("/signUp")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> add(@RequestBody Users users){
+        return ResponseEntity.ok(userService.add(users));
+    }
+
+    @PostMapping("/signUp")
+    public ResponseEntity<?> create(
+            @RequestParam(name = "name") String name,
+            @RequestParam(name = "lastName") String lastName,
+            @RequestParam(name = "phone") String phone,
+            @RequestParam(name = "groupNumber") String groupNumber
+            ){
+        Users users = new Users();
+        users.setName(name);
+        users.setLastName(lastName);
+        users.setPhone(phone);
+        users.setGroupNumber(groupNumber);
         return ResponseEntity.ok(userService.add(users));
     }
 
